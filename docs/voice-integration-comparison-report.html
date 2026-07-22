@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Integration · Comparison Report</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+/* Hallmark · macrostructure: Stat-Led · tone: atmospheric · anchor hue: warm (ember orange) */
+:root {
+  /* Paper */
+  --color-paper: oklch(16% 0.012 260);
+  --color-paper-2: oklch(20% 0.014 260);
+  --color-paper-3: oklch(25% 0.016 260);
+  --color-paper-4: oklch(30% 0.018 260);
+  /* Ink */
+  --color-ink: oklch(95% 0.005 260);
+  --color-ink-2: oklch(72% 0.008 260);
+  --color-ink-3: oklch(52% 0.010 260);
+  /* Accent — agent-meow ember */
+  --color-accent: oklch(68% 0.17 45);
+  --color-accent-2: oklch(58% 0.16 45);
+  --color-accent-3: oklch(48% 0.14 45);
+  --color-accent-glow: oklch(68% 0.17 45 / 0.15);
+  /* Status */
+  --color-success: oklch(70% 0.15 145);
+  --color-warning: oklch(75% 0.15 85);
+  --color-danger: oklch(65% 0.20 25);
+  --color-neutral: oklch(60% 0.010 260);
+  /* Fonts */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", monospace;
+  /* Scale */
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.75rem;
+  --text-display: 3.5rem;
+  /* Spacing (4pt scale) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-med: 300ms;
+  --dur-slow: 600ms;
+  /* Rule */
+  --rule: 1px solid oklch(35% 0.012 260);
+  --rule-accent: 1px solid var(--color-accent-3);
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  overflow-x: clip;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+/* ─── Hero ─────────────────────────────────────────────── */
+
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-2xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 60%);
+  pointer-events: none;
+  animation: pulse-glow 8s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(1.15); }
+}
+
+.hero-content {
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  animation: fade-up 600ms var(--ease-out) 100ms forwards;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, var(--text-display));
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-lg);
+  opacity: 0;
+  animation: fade-up 600ms var(--ease-out) 200ms forwards;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.hero-subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 600px;
+  margin-bottom: var(--space-2xl);
+  opacity: 0;
+  animation: fade-up 600ms var(--ease-out) 300ms forwards;
+}
+
+.hero-stats {
+  display: flex;
+  gap: var(--space-2xl);
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fade-up 600ms var(--ease-out) 400ms forwards;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Sections ─────────────────────────────────────────── */
+
+section {
+  padding: var(--space-3xl) var(--space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: var(--space-2xl);
+}
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+}
+
+.section-head p {
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 700px;
+}
+
+/* ─── Mermaid ──────────────────────────────────────────── */
+
+.mermaid-container {
+  background: var(--color-paper-2);
+  border: var(--rule);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  overflow-x: auto;
+  margin: var(--space-xl) 0;
+}
+
+.mermaid {
+  display: flex;
+  justify-content: center;
+  min-width: 600px;
+}
+
+/* ─── Comparison Table ─────────────────────────────────── */
+
+.table-wrap {
+  overflow-x: auto;
+  border: var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--color-paper-2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  min-width: 700px;
+}
+
+thead {
+  background: var(--color-paper-3);
+}
+
+th {
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: var(--rule);
+  white-space: nowrap;
+}
+
+td {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: oklch(28% 0.010 260) solid 1px;
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: oklch(22% 0.012 260 / 0.5); }
+
+td:first-child {
+  font-weight: 500;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.pill-win {
+  background: oklch(70% 0.15 145 / 0.12);
+  color: var(--color-success);
+  border: 1px solid oklch(70% 0.15 145 / 0.25);
+}
+
+.pill-tie {
+  background: oklch(60% 0.010 260 / 0.12);
+  color: var(--color-neutral);
+  border: 1px solid oklch(60% 0.010 260 / 0.25);
+}
+
+.pill-loss {
+  background: oklch(65% 0.20 25 / 0.10);
+  color: var(--color-danger);
+  border: 1px solid oklch(65% 0.20 25 / 0.20);
+}
+
+.pill-na {
+  background: oklch(50% 0.010 260 / 0.10);
+  color: var(--color-ink-3);
+  border: 1px solid oklch(50% 0.010 260 / 0.20);
+}
+
+/* ─── Cards ────────────────────────────────────────────── */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+.card {
+  background: var(--color-paper-2);
+  border: var(--rule);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: border-color var(--dur-med) var(--ease-out),
+              box-shadow var(--dur-med) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--color-accent-3);
+  box-shadow: 0 8px 24px -12px var(--color-accent-glow);
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  color: var(--color-ink);
+}
+
+.card p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.5;
+}
+
+.card-status {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+}
+
+.card-status-ready {
+  background: oklch(70% 0.15 145 / 0.12);
+  color: var(--color-success);
+}
+
+.card-status-gap {
+  background: oklch(75% 0.15 85 / 0.12);
+  color: var(--color-warning);
+}
+
+/* ─── Code block ───────────────────────────────────────── */
+
+.code-block {
+  background: oklch(13% 0.010 260);
+  border: var(--rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  overflow-x: auto;
+  margin: var(--space-lg) 0;
+}
+
+.code-block .kw { color: var(--color-accent); }
+.code-block .str { color: oklch(70% 0.13 145); }
+.code-block .cmt { color: var(--color-ink-3); }
+
+/* ─── Status bars ──────────────────────────────────────── */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-paper-2);
+  border: var(--rule);
+  border-radius: var(--radius-md);
+  margin: var(--space-sm) 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot-ready { background: var(--color-success); box-shadow: 0 0 8px oklch(70% 0.15 145 / 0.4); }
+.status-dot-gap { background: var(--color-warning); }
+.status-dot-na { background: var(--color-neutral); }
+
+.status-bar-text {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+.status-bar-text strong { color: var(--color-ink); }
+
+/* ─── Footer ───────────────────────────────────────────── */
+
+footer {
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+  border-top: var(--rule);
+  margin-top: var(--space-3xl);
+}
+
+footer p {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-ink-3);
+}
+
+/* ─── Reduced motion ───────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero::before { animation: none; opacity: 0.5; }
+}
+
+/* ─── Mobile ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero { padding: var(--space-xl) var(--space-md); min-height: auto; }
+  section { padding: var(--space-2xl) var(--space-md); }
+  .hero-stats { gap: var(--space-lg); }
+  .card-grid { grid-template-columns: 1fr; }
+  .mermaid-container { padding: var(--space-md); }
+}
+
+/* ─── Print / PDF ─────────────────────────────────────── */
+@media print {
+  @page { size: A4; margin: 15mm 12mm; }
+  html, body { background: #faf9f7 !important; color: #2a2520 !important; font-size: 11pt; line-height: 1.5; overflow: visible !important; }
+  .hero { min-height: auto !important; padding: 2rem 0 1.5rem 0 !important; page-break-after: avoid; }
+  .hero::before { display: none !important; }
+  .hero-eyebrow, .hero-title, .hero-subtitle, .hero-stats { opacity: 1 !important; animation: none !important; transform: none !important; }
+  .hero-title { font-size: 1.8rem !important; color: #2a2520 !important; }
+  .hero-title em { color: #c4541a !important; }
+  .hero-eyebrow { color: #c4541a !important; }
+  .hero-subtitle { color: #5a5550 !important; }
+  .stat-value { color: #c4541a !important; }
+  .stat-label { color: #7a7570 !important; }
+  section { padding: 1.5rem 0 !important; max-width: 100% !important; page-break-inside: avoid; }
+  .section-head h2 { color: #2a2520 !important; font-size: 1.3rem !important; }
+  .section-head p { color: #5a5550 !important; }
+  .mermaid-container { background: #f5f3f0 !important; border: 1px solid #d5d0c8 !important; page-break-inside: avoid; }
+  .mermaid { min-width: auto !important; }
+  .table-wrap { background: #fdfcfa !important; border: 1px solid #d5d0c8 !important; page-break-inside: avoid; }
+  thead { background: #ede9e3 !important; }
+  th { color: #4a4540 !important; border-bottom: 1px solid #c5c0b8 !important; }
+  td { border-bottom: 1px solid #e5e0d8 !important; color: #3a3530 !important; }
+  td:first-child { color: #2a2520 !important; }
+  .pill-win { background: #e8f5e9 !important; color: #2e7d32 !important; border-color: #a5d6a7 !important; }
+  .pill-tie { background: #f0ede8 !important; color: #6a6560 !important; border-color: #d5d0c8 !important; }
+  .pill-loss { background: #fbebee !important; color: #c62828 !important; border-color: #ef9a9a !important; }
+  .pill-na { background: #f0ede8 !important; color: #9a9590 !important; border-color: #d5d0c8 !important; }
+  .card { background: #f8f6f3 !important; border: 1px solid #d5d0c8 !important; page-break-inside: avoid; }
+  .card h3 { color: #2a2520 !important; }
+  .card p { color: #5a5550 !important; }
+  .card-icon { background: #fff3e0 !important; color: #c4541a !important; }
+  .card-status-ready { background: #e8f5e9 !important; color: #2e7d32 !important; }
+  .card-status-gap { background: #fff8e1 !important; color: #f57f17 !important; }
+  .code-block { background: #f2f0ed !important; border: 1px solid #d5d0c8 !important; color: #3a3530 !important; }
+  .code-block .kw { color: #c4541a !important; }
+  .code-block .str { color: #2e7d32 !important; }
+  .code-block .cmt { color: #8a8580 !important; }
+  .status-bar { background: #f8f6f3 !important; border: 1px solid #d5d0c8 !important; page-break-inside: avoid; }
+  .status-bar-text { color: #5a5550 !important; }
+  .status-bar-text strong { color: #2a2520 !important; }
+  .status-dot-ready { background: #2e7d32 !important; box-shadow: none !important; }
+  .status-dot-gap { background: #f57f17 !important; }
+  footer { border-top: 1px solid #d5d0c8 !important; }
+  footer p { color: #9a9590 !important; }
+}
+
+/* ─── Print mode class (?print=1 for headless PDF) ────── */
+.print-mode, .print-mode body { background: #faf9f7 !important; color: #2a2520 !important; font-size: 11pt; line-height: 1.5; overflow: visible !important; }
+.print-mode .hero { min-height: auto !important; padding: 2rem 0 1.5rem 0 !important; }
+.print-mode .hero::before { display: none !important; }
+.print-mode .hero-eyebrow, .print-mode .hero-title, .print-mode .hero-subtitle, .print-mode .hero-stats { opacity: 1 !important; animation: none !important; transform: none !important; }
+.print-mode .hero-title { font-size: 1.8rem !important; color: #2a2520 !important; }
+.print-mode .hero-title em { color: #c4541a !important; }
+.print-mode .hero-eyebrow { color: #c4541a !important; }
+.print-mode .hero-subtitle { color: #5a5550 !important; }
+.print-mode .stat-value { color: #c4541a !important; }
+.print-mode .stat-label { color: #7a7570 !important; }
+.print-mode section { padding: 1.5rem 0 !important; max-width: 100% !important; }
+.print-mode .section-head h2 { color: #2a2520 !important; font-size: 1.3rem !important; }
+.print-mode .section-head p { color: #5a5550 !important; }
+.print-mode .mermaid-container { background: #f5f3f0 !important; border: 1px solid #d5d0c8 !important; }
+.print-mode .mermaid { min-width: auto !important; }
+.print-mode .table-wrap { background: #fdfcfa !important; border: 1px solid #d5d0c8 !important; }
+.print-mode thead { background: #ede9e3 !important; }
+.print-mode th { color: #4a4540 !important; border-bottom: 1px solid #c5c0b8 !important; }
+.print-mode td { border-bottom: 1px solid #e5e0d8 !important; color: #3a3530 !important; }
+.print-mode td:first-child { color: #2a2520 !important; }
+.print-mode .pill-win { background: #e8f5e9 !important; color: #2e7d32 !important; border-color: #a5d6a7 !important; }
+.print-mode .pill-tie { background: #f0ede8 !important; color: #6a6560 !important; border-color: #d5d0c8 !important; }
+.print-mode .pill-loss { background: #fbebee !important; color: #c62828 !important; border-color: #ef9a9a !important; }
+.print-mode .pill-na { background: #f0ede8 !important; color: #9a9590 !important; border-color: #d5d0c8 !important; }
+.print-mode .card { background: #f8f6f3 !important; border: 1px solid #d5d0c8 !important; }
+.print-mode .card h3 { color: #2a2520 !important; }
+.print-mode .card p { color: #5a5550 !important; }
+.print-mode .card-icon { background: #fff3e0 !important; color: #c4541a !important; }
+.print-mode .card-status-ready { background: #e8f5e9 !important; color: #2e7d32 !important; }
+.print-mode .card-status-gap { background: #fff8e1 !important; color: #f57f17 !important; }
+.print-mode .code-block { background: #f2f0ed !important; border: 1px solid #d5d0c8 !important; color: #3a3530 !important; }
+.print-mode .code-block .kw { color: #c4541a !important; }
+.print-mode .code-block .str { color: #2e7d32 !important; }
+.print-mode .code-block .cmt { color: #8a8580 !important; }
+.print-mode .status-bar { background: #f8f6f3 !important; border: 1px solid #d5d0c8 !important; }
+.print-mode .status-bar-text { color: #5a5550 !important; }
+.print-mode .status-bar-text strong { color: #2a2520 !important; }
+.print-mode .status-dot-ready { background: #2e7d32 !important; box-shadow: none !important; }
+.print-mode .status-dot-gap { background: #f57f17 !important; }
+.print-mode footer { border-top: 1px solid #d5d0c8 !important; }
+.print-mode footer p { color: #9a9590 !important; }
+</style>
+</head>
+<body>
+
+<!-- ─── Hero ────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Voice Integration · Architecture Comparison</p>
+    <h1 class="hero-title">Handy × agent-meow × Hermes<br><em>vs</em> Cherry AI</h1>
+    <p class="hero-subtitle">
+      A deep-dive comparison of our open-source voice agent stack against
+      Cherry's cloud-credit model — covering STT, TTS, system control,
+      and the full voice I/O loop.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">4</span>
+        <span class="stat-label">Components</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">11</span>
+        <span class="stat-label">Tests passing</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">2</span>
+        <span class="stat-label">Files changed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">0</span>
+        <span class="stat-label">Recurring cost</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── Architecture ────────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Our Stack Architecture</h2>
+    <p>Four open-source components, each doing one thing well. Fully offline, cross-platform, no cloud credits.</p>
+  </div>
+
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart TB
+    subgraph Ears["STT — Speech to Text"]
+        H["Handy<br/>—transcribe-file --json<br/>offline · cross-platform<br/>Whisper / Parakeet"]
+    end
+
+    subgraph Door["Front Door — Workspace"]
+        AM["agent-meow<br/>web UI · avatar · orchestrator<br/>session store · policy bridge<br/>_EXTERNAL_ASSISTANT_MESSAGE_TYPE"]
+    end
+
+    subgraph Brain["Brain — Agent Harness"]
+        HE["Hermes Agent<br/>computer_use · 40+ tools<br/>cron · skills · memory<br/>Telegram / Discord / Slack"]
+    end
+
+    subgraph Mouth["TTS — Text to Speech"]
+        VB["Voicebox<br/>7 engines · voice cloning<br/>personalities · CPU-capable<br/>POST /speak · :17493"]
+        VV["VibeVoice<br/>vLLM fallback<br/>long-form · multi-speaker<br/>GPU required"]
+    end
+
+    H -->|"transcript"| AM
+    AM -->|"HermesExecutor.run_turn()"| HE
+    HE -->|"computer_use / shell"| OS["System Control<br/>brightness · volume · apps<br/>files · scheduled tasks"]
+    HE -->|"TextChunk events"| AM
+    AM -->|"speak tool"| VB
+    AM -->|"speak tool (fallback)"| VV
+    VB -->|"audio_url"| AM
+    VV -->|"data:audio/wav;base64"| AM
+
+    style H fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style AM fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style HE fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style VB fill:#2b2e34,stroke:#2ec27e,stroke-width:2px,color:#f2f3f5
+    style VV fill:#2b2e34,stroke:#70757d,stroke-width:1px,color:#f2f3f5,stroke-dasharray: 5,5
+    style OS fill:#202328,stroke:#595d65,stroke-width:1px,color:#90949b
+    </pre>
+  </div>
+</section>
+
+<!-- ─── Voice I/O Loop ──────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>The Full Voice I/O Loop</h2>
+    <p>Speak → Handy transcribes → agent-meow receives → Hermes executes → Voicebox speaks the response. All local, all offline.</p>
+  </div>
+
+  <div class="mermaid-container">
+    <pre class="mermaid">
+sequenceDiagram
+    actor User
+    participant Handy as Handy STT
+    participant Meow as agent-meow
+    participant Hermes as Hermes Agent
+    participant Voicebox as Voicebox TTS
+
+    User->>Handy: Press hotkey, speak
+    Handy->>Handy: VAD + Whisper/Parakeet
+    Handy->>Meow: Paste transcript to composer
+    Meow->>Meow: POST /v1/sessions/&lt;id&gt;/events
+    Meow->>Hermes: HermesExecutor.run_turn()
+    Hermes->>Hermes: computer_use / shell / skills
+    Hermes->>Meow: TextChunk + TurnComplete
+    Meow->>Meow: Session stream → SSE → Web UI
+    Meow->>Voicebox: speak tool → POST /speak
+    Voicebox->>Voicebox: TTS engine + voice profile
+    Voicebox->>Meow: audio_url + generation_id
+    Meow->>User: AudioBlock inline player
+    </pre>
+  </div>
+</section>
+
+<!-- ─── Capability Matrix ───────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Capability Comparison Matrix</h2>
+    <p>Feature-by-feature comparison across every dimension that matters for a voice-controlled agent platform.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Our Stack</th>
+          <th>Cherry</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>STT (voice input)</td>
+          <td>Handy — offline, cross-platform, Whisper/Parakeet, <code>--transcribe-file --json</code></td>
+          <td>Cloud ASR (28ms claim)</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>TTS (voice output)</td>
+          <td>Voicebox (7 engines, cloning, personalities) + VibeVoice (vLLM fallback)</td>
+          <td>Cloud TTS</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>Agent loop</td>
+          <td>Hermes — 40+ tools, computer_use, cron, skills, memory, subagents</td>
+          <td>30+ tools, multi-AI coordination</td>
+          <td><span class="pill pill-tie">Tie</span></td>
+        </tr>
+        <tr>
+          <td>System control</td>
+          <td>computer_use (set_value on sliders) + shell (WMI/PowerShell)</td>
+          <td>系统控制 — brightness, volume, apps</td>
+          <td><span class="pill pill-tie">Tie</span></td>
+        </tr>
+        <tr>
+          <td>Desktop automation</td>
+          <td>computer_use — background, no cursor steal, cross-platform</td>
+          <td>模拟鼠标点击控制</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>Scheduled tasks</td>
+          <td>cronjob_tools — cron + platform delivery</td>
+          <td>定时任务</td>
+          <td><span class="pill pill-tie">Tie</span></td>
+        </tr>
+        <tr>
+          <td>Messaging</td>
+          <td>Telegram / Discord / Slack / WhatsApp / Signal (Hermes gateway)</td>
+          <td>微信互联 (WeChat)</td>
+          <td><span class="pill pill-loss">Cherry wins</span></td>
+        </tr>
+        <tr>
+          <td>Workspace / UI</td>
+          <td>agent-meow web UI — avatar, panels, docs, images, videos, terminals, subagents</td>
+          <td>语音控制工作台</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>App management</td>
+          <td>shell / computer_use (winget/choco launch)</td>
+          <td>应用商店 — dedicated app store</td>
+          <td><span class="pill pill-loss">Cherry wins</span></td>
+        </tr>
+        <tr>
+          <td>File management</td>
+          <td>file_operations + agent-meow Files panel</td>
+          <td>我的文件</td>
+          <td><span class="pill pill-tie">Tie</span></td>
+        </tr>
+        <tr>
+          <td>PC diagnostics</td>
+          <td>Not built (deprioritized)</td>
+          <td>电脑医生 — system health monitor</td>
+          <td><span class="pill pill-na">N/A</span></td>
+        </tr>
+        <tr>
+          <td>Local LLM</td>
+          <td>Hermes (any endpoint incl. local Ollama) + Handy custom provider</td>
+          <td>Cloud credits only</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>Cross-platform</td>
+          <td>Windows / macOS / Linux (Handy + Hermes)</td>
+          <td>Windows AIPC only</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>Privacy</td>
+          <td>Fully offline — Handy STT + local LLM + Voicebox TTS</td>
+          <td>Cloud-dependent</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+        <tr>
+          <td>OEM branding</td>
+          <td>agent-meow branded front door + Voicebox voice cloning</td>
+          <td>Cherry-branded</td>
+          <td><span class="pill pill-tie">Tie</span></td>
+        </tr>
+        <tr>
+          <td>Pricing</td>
+          <td>Free — open source, local compute</td>
+          <td>¥0–129/month — credits expire in 30 days</td>
+          <td><span class="pill pill-win">We win</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Score Summary ───────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Score Summary</h2>
+    <p>Head-to-head tally across all 16 capabilities.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">W</div>
+      <h3>We win</h3>
+      <p>Offline STT, TTS flexibility, desktop automation, workspace UI, local LLM, cross-platform, privacy, pricing</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">T</div>
+      <h3>Tie</h3>
+      <p>Agent loop, system control, scheduled tasks, file management, OEM branding</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">C</div>
+      <h3>Cherry wins</h3>
+      <p>WeChat integration, app store polish</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">—</div>
+      <h3>Not applicable</h3>
+      <p>PC diagnostics — deprioritized by design decision</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TTS Path Comparison ──────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>TTS Integration — Two Paths</h2>
+    <p>The <code>_execute_voice_tool</code> function now supports dual TTS routing: Voicebox (preferred) and VibeVoice (fallback).</p>
+  </div>
+
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart LR
+    subgraph Call["text_to_speech / speak tool"]
+        T["Agent calls speak(text)"]
+    end
+
+    T -->|"check VOICEBOX_URL"| R1{"Set?"}
+    R1 -->|"Yes"| VB["Voicebox REST<br/>POST /speak :17493<br/>7 engines · cloning · personalities"]
+    R1 -->|"No"| R2{"VIBEVOICE_TTS_URL<br/>set?"}
+    R2 -->|"Yes"| VV["VibeVoice vLLM<br/>POST /audio/speech<br/>1 engine · GPU · long-form"]
+    R2 -->|"No"| ERR["Error: helpful message<br/>listing both options"]
+
+    VB -->|"audio_url + gen_id"| OUT["AudioBlock inline player"]
+    VV -->|"data:audio/wav;base64"| OUT
+
+    style VB fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style VV fill:#2b2e34,stroke:#70757d,stroke-width:1px,color:#f2f3f5,stroke-dasharray: 5,5
+    style OUT fill:#202328,stroke:#2ec27e,stroke-width:1px,color:#f2f3f5
+    </pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Voicebox (preferred)</th>
+          <th>VibeVoice (fallback)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Env var</td>
+          <td><code>VOICEBOX_URL</code></td>
+          <td><code>VIBEVOICE_TTS_URL</code></td>
+        </tr>
+        <tr>
+          <td>TTS engines</td>
+          <td>7 (Qwen3-TTS, LuxTTS, Chatterbox, TADA, Kokoro...)</td>
+          <td>1 (diffusion-based, Qwen2.5 backbone)</td>
+        </tr>
+        <tr>
+          <td>Voice cloning</td>
+          <td>Yes — 5 cloning engines, 3–30s sample</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Personalities</td>
+          <td>Yes — per-profile persona rewrite via local LLM</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>GPU required</td>
+          <td>No — Kokoro (82M, CPU) + LuxTTS (150x CPU)</td>
+          <td>Yes — vLLM + GPU</td>
+        </tr>
+        <tr>
+          <td>Long-form</td>
+          <td>Auto-chunking with crossfade</td>
+          <td>Up to 90 min, 4 speakers</td>
+        </tr>
+        <tr>
+          <td>Returns</td>
+          <td>audio_url (pollable) + generation_id + profile</td>
+          <td>data:audio/wav;base64 (inline)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Code Change Summary ─────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Code Change Summary</h2>
+    <p>Two files changed in agent-meow. The rest of the git diff is omnigent→agent-meow rebrand noise.</p>
+  </div>
+
+  <div class="code-block">
+<span class="cmt"># File 1: agent_meow/runner/tool_dispatch.py</span>
+<span class="cmt"># Added VOICEBOX_URL support to _execute_voice_tool()</span>
+
+<span class="kw">if</span> voicebox_url:
+    <span class="cmt"># Route through Voicebox REST API (POST /speak)</span>
+    payload = {<span class="str">"text"</span>: text}
+    <span class="kw">if</span> profile: payload[<span class="str">"profile"</span>] = profile
+    <span class="kw">if</span> engine: payload[<span class="str">"engine"</span>] = engine
+    resp = <span class="kw">await</span> server_client.post(
+        f<span class="str">"{voicebox_url}/speak"</span>, json=payload, timeout=120.0
+    )
+    <span class="cmt"># Returns: audio_url + generation_id + profile + source: "voicebox"</span>
+
+<span class="kw">elif</span> tts_url:
+    <span class="cmt"># Fallback: VibeVoice-TTS via vLLM gateway</span>
+    resp = <span class="kw">await</span> server_client.post(
+        f<span class="str">"{tts_url}/audio/speech"</span>, json=payload, timeout=120.0
+    )
+    <span class="cmt"># Returns: data:audio/wav;base64 + source: "vibevoice"</span>
+
+<span class="cmt"># File 2: tests/runner/test_voice_tool_dispatch.py (new, 11 tests)</span>
+<span class="cmt"># All passing: 11 passed in 0.24s</span>
+  </div>
+</section>
+
+<!-- ─── Implementation Status ────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Implementation Status</h2>
+    <p>What's code-ready vs what needs wiring. Most of the stack was already built — we only added the Voicebox TTS path.</p>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>Handy --transcribe-file</strong> — fully implemented in Handy main. Outputs JSON with text, model, rtf. Headless mode bypasses GUI.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>_execute_voice_tool</strong> — fully implemented in tool_dispatch.py. Handles Handy STT + Voicebox/VibeVoice TTS. 11 tests passing.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>_VOICE_TOOLS frozenset</strong> — all 4 tool names in _ALL_LOCAL_TOOLS + _NATIVE_RELAY_BUILTIN_TOOLS. Dispatch routing at line ~5901.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>HermesExecutor</strong> — agent-meow drives Hermes as a harness with session resume (--resume session_id) + policy bridge (pre_tool_call hook).</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>_EXTERNAL_ASSISTANT_MESSAGE_TYPE</strong> — sessions.py has built-in mechanism for landing external agent results into the workspace transcript.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-ready"></span>
+    <span class="status-bar-text"><strong>AudioBlock.tsx + parseAudioFromToolOutput()</strong> — component exists, parses audio_url from JSON tool output. NOT yet wired into ToolCard.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-gap"></span>
+    <span class="status-bar-text"><strong>AudioBlock → ToolCard wiring</strong> — Task 4: ~10 lines in ToolCard.tsx to call parseAudioFromToolOutput before rendering raw text.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-gap"></span>
+    <span class="status-bar-text"><strong>Voicebox MCP server config</strong> — Task 1: ~10 lines YAML for stdio transport MCP server registration.</span>
+  </div>
+
+  <div class="status-bar">
+    <span class="status-dot status-dot-gap"></span>
+    <span class="status-bar-text"><strong>voicebox-agent example spec</strong> — Task 2: ~30 lines YAML example agent with Voicebox MCP + Handy STT tools.</span>
+  </div>
+</section>
+
+<!-- ─── Remaining Gaps ───────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Remaining Gaps vs Cherry</h2>
+    <p>Explicitly deprioritized per design decisions. Listed here for completeness.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">W</div>
+      <h3>WeChat integration</h3>
+      <p>Hermes has 5 messaging platforms (Telegram, Discord, Slack, WhatsApp, Signal). WeChat would require a new gateway adapter — China-market specific.</p>
+      <span class="card-status card-status-gap">Not built</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">A</div>
+      <h3>App store surface</h3>
+      <p>Cherry has a dedicated app store UI. Our stack uses shell/computer_use (winget/choco) — functional but less polished as a consumer surface.</p>
+      <span class="card-status card-status-gap">Not built</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">D</div>
+      <h3>PC diagnostics</h3>
+      <p>Cherry's 电脑医生 monitors system errors, network, drivers, device health. We deprioritized this — Hermes could add it as a skill (cron + WMI/EventLog).</p>
+      <span class="card-status card-status-gap">Deprioritized</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Pricing Comparison ──────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Pricing Model Comparison</h2>
+    <p>Our stack is free and local. Cherry charges monthly credits that expire in 30 days.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Cherry Price</th>
+          <th>Cherry Credits</th>
+          <th>Our Stack</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Free</td>
+          <td>¥0</td>
+          <td>30,000</td>
+          <td>Everything — no limits</td>
+        </tr>
+        <tr>
+          <td>Basic</td>
+          <td>¥69/month</td>
+          <td>600,000 (expires 30 days)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Advanced</td>
+          <td>¥99/month</td>
+          <td>900,000 (expires 30 days)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Super</td>
+          <td>¥129/month</td>
+          <td>1,200,000 (expires 30 days)</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Annual cost</td>
+          <td>¥0–1,548</td>
+          <td>Credits expire monthly</td>
+          <td>¥0 — forever</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Next Steps ──────────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>Next Steps</h2>
+    <p>Three small tasks remaining to complete the voice integration.</p>
+  </div>
+
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart LR
+    T1["Task 4<br/>Wire AudioBlock<br/>into ToolCard<br/>~10 lines TSX"]
+    T2["Task 1<br/>Voicebox MCP<br/>server YAML<br/>~10 lines"]
+    T3["Task 2<br/>voicebox-agent<br/>example spec<br/>~30 lines"]
+    E2E["E2E Test<br/>Full voice loop<br/>manual validation"]
+
+    T1 --> E2E
+    T2 --> E2E
+    T3 --> E2E
+
+    E2E --> DONE["Done —<br/>full voice I/O loop<br/>operational"]
+
+    style T1 fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style T2 fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style T3 fill:#2b2e34,stroke:#e8651a,stroke-width:2px,color:#f2f3f5
+    style DONE fill:#2b2e34,stroke:#2ec27e,stroke-width:2px,color:#f2f3f5
+    </pre>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">4</div>
+      <h3>Wire AudioBlock into ToolCard</h3>
+      <p>Import parseAudioFromToolOutput in ToolCard.tsx, check for audio_url before rendering raw JSON. ~10 lines.</p>
+      <span class="card-status card-status-gap">~10 lines TSX</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">1</div>
+      <h3>Voicebox MCP server config</h3>
+      <p>Create agent_meow/tools/mcp/voicebox.yaml with stdio transport. ~10 lines YAML.</p>
+      <span class="card-status card-status-gap">~10 lines YAML</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">2</div>
+      <h3>voicebox-agent example spec</h3>
+      <p>Create examples/voicebox-agent/config.yaml with Voicebox MCP + Handy STT. ~30 lines YAML.</p>
+      <span class="card-status card-status-gap">~30 lines YAML</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer>
+  <p>Voice Integration Comparison Report · 2026-07-22 · Handy × agent-meow × Hermes × Voicebox</p>
+</footer>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const isPrintMode = urlParams.get('print') === '1';
+
+  const darkTheme = {
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#2b2e34', primaryTextColor: '#f2f3f5', primaryBorderColor: '#e8651a',
+      lineColor: '#595d65', secondaryColor: '#202328', tertiaryColor: '#1a1c20',
+      fontFamily: 'Inter, system-ui, sans-serif', fontSize: '14px',
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 50, boxMargin: 10 },
+  };
+
+  const lightTheme = {
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#ede9e3', primaryTextColor: '#2a2520', primaryBorderColor: '#c4541a',
+      lineColor: '#7a7570', secondaryColor: '#f5f3f0', tertiaryColor: '#f8f6f3',
+      background: '#f5f3f0', mainBkg: '#ede9e3', secondBkg: '#f5f3f0', tertiaryBkg: '#f8f6f3',
+      fontFamily: 'Inter, system-ui, sans-serif', fontSize: '13px',
+      actorBkg: '#ede9e3', actorTextColor: '#2a2520', actorBorderColor: '#c4541a',
+      signalColor: '#5a5550', signalTextColor: '#2a2520',
+      labelBoxBkgColor: '#ede9e3', labelBoxBorderColor: '#c4541a', labelTextColor: '#2a2520',
+      loopTextColor: '#2a2520', noteBkgColor: '#fff3e0', noteTextColor: '#2a2520',
+      noteBorderColor: '#c4541a', activationBkgColor: '#ede9e3', activationBorderColor: '#7a7570',
+      sequenceNumberColor: '#2a2520',
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 50, boxMargin: 10 },
+  };
+
+  const activeTheme = isPrintMode ? lightTheme : darkTheme;
+  mermaid.initialize({ startOnLoad: true, ...activeTheme });
+
+  if (isPrintMode) document.documentElement.classList.add('print-mode');
+
+  function fixMermaidForPrint() {
+    if (!isPrintMode) return;
+    document.querySelectorAll('.mermaid svg').forEach(function(svg) {
+      svg.querySelectorAll('rect, polygon, circle').forEach(function(el) {
+        const style = el.getAttribute('style');
+        if (!style) return;
+        let s = style
+          .replace(/fill:#2b2e34\s*!important/gi, 'fill:#ede9e3 !important')
+          .replace(/fill:#202328\s*!important/gi, 'fill:#f5f3f0 !important')
+          .replace(/fill:#1a1c20\s*!important/gi, 'fill:#f8f6f3 !important')
+          .replace(/stroke:#e8651a\s*!important/gi, 'stroke:#c4541a !important')
+          .replace(/stroke:#2ec27e\s*!important/gi, 'stroke:#2e7d32 !important')
+          .replace(/stroke:#70757d\s*!important/gi, 'stroke:#9a9590 !important')
+          .replace(/stroke:#595d65\s*!important/gi, 'stroke:#7a7570 !important');
+        if (s !== style) el.setAttribute('style', s);
+      });
+      svg.querySelectorAll('[style*="color:#f2f3f5"]').forEach(function(el) {
+        const style = el.getAttribute('style');
+        el.setAttribute('style', style.replace(/color:#f2f3f5\s*!important/gi, 'color:#2a2520 !important'));
+      });
+      svg.querySelectorAll('.edgeLabel rect, .edgeLabel polygon').forEach(function(el) { el.style.fill = '#f8f6f3'; });
+    });
+  }
+
+  if (isPrintMode) setTimeout(fixMermaidForPrint, 1500);
+</script>
+
+</body>
+</html>

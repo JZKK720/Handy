@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>语音集成 · 对比分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --color-paper: #faf9f7;
+  --color-paper-2: #f5f3f0;
+  --color-paper-3: #ede9e3;
+  --color-ink: #2a2520;
+  --color-ink-2: #5a5550;
+  --color-ink-3: #7a7570;
+  --color-accent: #c4541a;
+  --color-accent-2: #d4622a;
+  --color-accent-3: #a5441a;
+  --color-success: #2e7d32;
+  --color-warning: #f57f17;
+  --color-danger: #c62828;
+  --color-neutral: #6a6560;
+  --color-border: #d5d0c8;
+  --color-border-light: #e5e0d8;
+  --font-display: "Noto Sans SC", "Space Grotesk", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --font-body: "Noto Sans SC", "Inter", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", monospace;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-display: 2.5rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 11pt;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  padding: 2rem 0 1.5rem 0;
+  border-bottom: 2px solid var(--color-accent);
+  margin-bottom: var(--space-xl);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-title em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.hero-subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 700px;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-stats {
+  display: flex;
+  gap: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+section {
+  padding: var(--space-xl) 0;
+  max-width: 100%;
+}
+
+.section-head {
+  margin-bottom: var(--space-lg);
+}
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+}
+
+.section-head p {
+  font-size: var(--text-base);
+  color: var(--color-ink-2);
+  max-width: 700px;
+}
+
+.mermaid-container {
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  overflow-x: auto;
+  margin: var(--space-lg) 0;
+}
+
+.mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: #fdfcfa;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+thead { background: var(--color-paper-3); }
+
+th {
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+td {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: top;
+  color: #3a3530;
+}
+
+tr:last-child td { border-bottom: none; }
+
+td:first-child {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.pill-win { background: #e8f5e9; color: var(--color-success); border: 1px solid #a5d6a7; }
+.pill-tie { background: #f0ede8; color: var(--color-neutral); border: 1px solid var(--color-border); }
+.pill-loss { background: #fbebee; color: var(--color-danger); border: 1px solid #ef9a9a; }
+.pill-na { background: #f0ede8; color: var(--color-ink-3); border: 1px solid var(--color-border); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.card {
+  background: #f8f6f3;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: #fff3e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  color: var(--color-accent);
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  color: var(--color-ink);
+}
+
+.card p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.5;
+}
+
+.card-status {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+}
+
+.card-status-ready { background: #e8f5e9; color: var(--color-success); }
+.card-status-gap { background: #fff8e1; color: var(--color-warning); }
+
+.code-block {
+  background: #f2f0ed;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: #3a3530;
+  overflow-x: auto;
+  margin: var(--space-md) 0;
+}
+
+.code-block .kw { color: var(--color-accent); }
+.code-block .str { color: var(--color-success); }
+.code-block .cmt { color: var(--color-ink-3); }
+
+.status-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: #f8f6f3;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin: var(--space-sm) 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.status-dot-ready { background: var(--color-success); }
+.status-dot-gap { background: var(--color-warning); }
+
+.status-bar-text {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+.status-bar-text strong { color: var(--color-ink); }
+
+footer {
+  padding: var(--space-xl) 0;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-xl);
+}
+
+footer p {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-ink-3);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: #f0ede8;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--color-ink);
+}
+
+@page { size: A4; margin: 15mm 12mm; }
+</style>
+</head>
+<body>
+
+<!-- ─── Hero ────────────────────────────────────────────── -->
+<header class="hero">
+  <p class="hero-eyebrow">语音集成 · 架构对比分析</p>
+  <h1 class="hero-title">Handy × agent-meow × Hermes<br><em>对比</em> Cherry AI</h1>
+  <p class="hero-subtitle">
+    我们的开源语音智能体技术栈与 Cherry 云端积分模式的深度对比分析 ——
+    涵盖语音识别 (STT)、语音合成 (TTS)、系统控制及完整语音交互闭环。
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-value">4</span><span class="stat-label">核心组件</span></div>
+    <div class="stat"><span class="stat-value">11</span><span class="stat-label">测试通过</span></div>
+    <div class="stat"><span class="stat-value">2</span><span class="stat-label">文件变更</span></div>
+    <div class="stat"><span class="stat-value">0</span><span class="stat-label">订阅费用</span></div>
+  </div>
+</header>
+
+<!-- ─── Architecture ────────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>我们的技术栈架构</h2>
+    <p>四个开源组件，各司其职。完全离线、跨平台、无需云端积分。</p>
+  </div>
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart TB
+    subgraph Ears["语音识别 STT"]
+        H["Handy<br/>--transcribe-file --json<br/>离线 · 跨平台<br/>Whisper / Parakeet"]
+    end
+    subgraph Door["前端门户 — 工作空间"]
+        AM["agent-meow<br/>Web UI · 虚拟形象 · 调度器<br/>会话存储 · 策略桥接"]
+    end
+    subgraph Brain["大脑 — 智能体引擎"]
+        HE["Hermes Agent<br/>computer_use · 40+ 工具<br/>定时任务 · 技能 · 记忆<br/>Telegram / Discord / Slack"]
+    end
+    subgraph Mouth["语音合成 TTS"]
+        VB["Voicebox<br/>7 引擎 · 语音克隆<br/>个性化配置 · CPU 可用<br/>POST /speak · :17493"]
+        VV["VibeVoice<br/>vLLM 备选方案<br/>长文本 · 多说话人<br/>需 GPU"]
+    end
+    H -->|"转录文本"| AM
+    AM -->|"HermesExecutor.run_turn()"| HE
+    HE -->|"computer_use / shell"| OS["系统控制<br/>亮度 · 音量 · 应用<br/>文件 · 定时任务"]
+    HE -->|"TextChunk 事件"| AM
+    AM -->|"speak 工具"| VB
+    AM -->|"speak 工具 (备选)"| VV
+    VB -->|"audio_url"| AM
+    VV -->|"data:audio/wav;base64"| AM
+    style H fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style AM fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style HE fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style VB fill:#ede9e3,stroke:#2e7d32,stroke-width:2px,color:#2a2520
+    style VV fill:#f5f3f0,stroke:#9a9590,stroke-width:1px,color:#2a2520,stroke-dasharray: 5,5
+    style OS fill:#f5f3f0,stroke:#7a7570,stroke-width:1px,color:#5a5550
+    </pre>
+  </div>
+</section>
+
+<!-- ─── Voice I/O Loop ──────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>完整语音交互闭环</h2>
+    <p>说话 → Handy 转录 → agent-meow 接收 → Hermes 执行 → Voicebox 朗读响应。全程本地、全程离线。</p>
+  </div>
+  <div class="mermaid-container">
+    <pre class="mermaid">
+sequenceDiagram
+    actor User as 用户
+    participant Handy as Handy STT
+    participant Meow as agent-meow
+    participant Hermes as Hermes Agent
+    participant Voicebox as Voicebox TTS
+    User->>Handy: 按下快捷键, 说话
+    Handy->>Handy: VAD + Whisper/Parakeet
+    Handy->>Meow: 粘贴转录文本到输入框
+    Meow->>Meow: POST /v1/sessions/&lt;id&gt;/events
+    Meow->>Hermes: HermesExecutor.run_turn()
+    Hermes->>Hermes: computer_use / shell / skills
+    Hermes->>Meow: TextChunk + TurnComplete
+    Meow->>Meow: 会话流 → SSE → Web UI
+    Meow->>Voicebox: speak 工具 → POST /speak
+    Voicebox->>Voicebox: TTS 引擎 + 语音配置
+    Voicebox->>Meow: audio_url + generation_id
+    Meow->>User: AudioBlock 内嵌播放器
+    </pre>
+  </div>
+</section>
+
+<!-- ─── Capability Matrix ───────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>能力对比矩阵</h2>
+    <p>针对语音智能体平台的每个关键维度，进行逐项对比分析。</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>能力</th><th>我们的技术栈</th><th>Cherry</th><th>结论</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>语音识别 (STT)</td><td>Handy — 离线、跨平台、Whisper/Parakeet，<code>--transcribe-file --json</code></td><td>云端 ASR（宣称 28ms）</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>语音合成 (TTS)</td><td>Voicebox（7 引擎、语音克隆、个性化）+ VibeVoice（vLLM 备选）</td><td>云端 TTS</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>智能体循环</td><td>Hermes — 40+ 工具、computer_use、定时任务、技能、记忆、子智能体</td><td>30+ 工具、多 AI 协调</td><td><span class="pill pill-tie">持平</span></td></tr>
+        <tr><td>系统控制</td><td>computer_use（滑块 set_value）+ shell（WMI/PowerShell）</td><td>系统控制 — 亮度、音量、应用</td><td><span class="pill pill-tie">持平</span></td></tr>
+        <tr><td>桌面自动化</td><td>computer_use — 后台运行、不抢占鼠标、跨平台</td><td>模拟鼠标点击控制</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>定时任务</td><td>cronjob_tools — cron + 平台投递</td><td>定时任务</td><td><span class="pill pill-tie">持平</span></td></tr>
+        <tr><td>消息平台</td><td>Telegram / Discord / Slack / WhatsApp / Signal（Hermes 网关）</td><td>微信互联</td><td><span class="pill pill-loss">Cherry 领先</span></td></tr>
+        <tr><td>工作空间 / UI</td><td>agent-meow Web UI — 虚拟形象、面板、文档、图片、视频、终端、子智能体</td><td>语音控制工作台</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>应用管理</td><td>shell / computer_use（winget/choco 启动）</td><td>应用商店 — 专用应用商店界面</td><td><span class="pill pill-loss">Cherry 领先</span></td></tr>
+        <tr><td>文件管理</td><td>file_operations + agent-meow 文件面板</td><td>我的文件</td><td><span class="pill pill-tie">持平</span></td></tr>
+        <tr><td>电脑诊断</td><td>未实现（已主动降优先级）</td><td>电脑医生 — 系统健康监控</td><td><span class="pill pill-na">不适用</span></td></tr>
+        <tr><td>本地大模型</td><td>Hermes（任意端点，含本地 Ollama）+ Handy 自定义提供商</td><td>仅云端积分</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>跨平台</td><td>Windows / macOS / Linux（Handy + Hermes）</td><td>仅 Windows AIPC</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>隐私保护</td><td>完全离线 — Handy STT + 本地 LLM + Voicebox TTS</td><td>依赖云端</td><td><span class="pill pill-win">我们领先</span></td></tr>
+        <tr><td>OEM 品牌定制</td><td>agent-meow 品牌前端 + Voicebox 语音克隆</td><td>Cherry 品牌</td><td><span class="pill pill-tie">持平</span></td></tr>
+        <tr><td>定价模式</td><td>免费 — 开源、本地计算</td><td>¥0–129/月 — 积分 30 天过期</td><td><span class="pill pill-win">我们领先</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Score Summary ───────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>得分汇总</h2>
+    <p>16 项能力的正面交锋统计。</p>
+  </div>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">赢</div><h3>我们领先</h3><p>离线 STT、TTS 灵活性、桌面自动化、工作空间 UI、本地大模型、跨平台、隐私保护、定价模式</p></div>
+    <div class="card"><div class="card-icon">平</div><h3>持平</h3><p>智能体循环、系统控制、定时任务、文件管理、OEM 品牌定制</p></div>
+    <div class="card"><div class="card-icon">输</div><h3>Cherry 领先</h3><p>微信集成、应用商店体验</p></div>
+    <div class="card"><div class="card-icon">—</div><h3>不适用</h3><p>电脑诊断 — 设计决策中已主动降优先级</p></div>
+  </div>
+</section>
+
+<!-- ─── TTS Path Comparison ──────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>TTS 集成 — 双路径方案</h2>
+    <p><code>_execute_voice_tool</code> 函数现已支持双 TTS 路由：Voicebox（首选）和 VibeVoice（备选）。</p>
+  </div>
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart LR
+    subgraph Call["text_to_speech / speak 工具"]
+        T["智能体调用 speak(text)"]
+    end
+    T -->|"检查 VOICEBOX_URL"| R1{"已设置?"}
+    R1 -->|"是"| VB["Voicebox REST<br/>POST /speak :17493<br/>7 引擎 · 克隆 · 个性化"]
+    R1 -->|"否"| R2{"VIBEVOICE_TTS_URL<br/>已设置?"}
+    R2 -->|"是"| VV["VibeVoice vLLM<br/>POST /audio/speech<br/>1 引擎 · 需 GPU · 长文本"]
+    R2 -->|"否"| ERR["错误: 友好提示<br/>列出两个选项"]
+    VB -->|"audio_url + gen_id"| OUT["AudioBlock 内嵌播放器"]
+    VV -->|"data:audio/wav;base64"| OUT
+    style VB fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style VV fill:#f5f3f0,stroke:#9a9590,stroke-width:1px,color:#2a2520,stroke-dasharray: 5,5
+    style OUT fill:#f5f3f0,stroke:#2e7d32,stroke-width:1px,color:#2a2520
+    </pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>特性</th><th>Voicebox（首选）</th><th>VibeVoice（备选）</th></tr></thead>
+      <tbody>
+        <tr><td>环境变量</td><td><code>VOICEBOX_URL</code></td><td><code>VIBEVOICE_TTS_URL</code></td></tr>
+        <tr><td>TTS 引擎数</td><td>7（Qwen3-TTS、LuxTTS、Chatterbox、TADA、Kokoro 等）</td><td>1（基于扩散模型，Qwen2.5 骨干）</td></tr>
+        <tr><td>语音克隆</td><td>支持 — 5 个克隆引擎，3–30 秒样本</td><td>不支持</td></tr>
+        <tr><td>个性化配置</td><td>支持 — 按配置文件的本地 LLM 人设改写</td><td>不支持</td></tr>
+        <tr><td>GPU 要求</td><td>否 — Kokoro（82M，CPU）+ LuxTTS（150x CPU）</td><td>是 — vLLM + GPU</td></tr>
+        <tr><td>长文本处理</td><td>自动分块 + 交叉淡入淡出</td><td>最长 90 分钟，4 个说话人</td></tr>
+        <tr><td>返回格式</td><td>audio_url（可轮询）+ generation_id + profile</td><td>data:audio/wav;base64（内联）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Code Change Summary ─────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>代码变更摘要</h2>
+    <p>agent-meow 中变更了 2 个文件。Git diff 中的其余部分为 omnigent→agent-meow 品牌重命名的噪音。</p>
+  </div>
+  <div class="code-block">
+<span class="cmt"># 文件 1: agent_meow/runner/tool_dispatch.py</span>
+<span class="cmt"># 在 _execute_voice_tool() 中新增 VOICEBOX_URL 支持</span>
+
+<span class="kw">if</span> voicebox_url:
+    <span class="cmt"># 路由到 Voicebox REST API (POST /speak)</span>
+    payload = {<span class="str">"text"</span>: text}
+    <span class="kw">if</span> profile: payload[<span class="str">"profile"</span>] = profile
+    <span class="kw">if</span> engine: payload[<span class="str">"engine"</span>] = engine
+    resp = <span class="kw">await</span> server_client.post(
+        f<span class="str">"{voicebox_url}/speak"</span>, json=payload, timeout=120.0
+    )
+    <span class="cmt"># 返回: audio_url + generation_id + profile + source: "voicebox"</span>
+
+<span class="kw">elif</span> tts_url:
+    <span class="cmt"># 备选: VibeVoice-TTS via vLLM 网关</span>
+    resp = <span class="kw">await</span> server_client.post(
+        f<span class="str">"{tts_url}/audio/speech"</span>, json=payload, timeout=120.0
+    )
+    <span class="cmt"># 返回: data:audio/wav;base64 + source: "vibevoice"</span>
+
+<span class="cmt"># 文件 2: tests/runner/test_voice_tool_dispatch.py (新增, 11 个测试)</span>
+<span class="cmt"># 全部通过: 11 passed in 0.24s</span>
+  </div>
+</section>
+
+<!-- ─── Implementation Status ────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>实现状态</h2>
+    <p>已就绪的代码 vs 待接线的内容。技术栈大部分已构建完成 —— 我们仅新增了 Voicebox TTS 路径。</p>
+  </div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>Handy --transcribe-file</strong> — 已在 Handy main 分支完整实现。输出 JSON（含 text、model、rtf）。无头模式绕过 GUI。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>_execute_voice_tool</strong> — 已在 tool_dispatch.py 完整实现。处理 Handy STT + Voicebox/VibeVoice TTS。11 个测试通过。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>_VOICE_TOOLS frozenset</strong> — 全部 4 个工具名已纳入 _ALL_LOCAL_TOOLS + _NATIVE_RELAY_BUILTIN_TOOLS。分发路由位于 ~5901 行。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>HermesExecutor</strong> — agent-meow 以引擎方式驱动 Hermes，支持会话恢复（--resume session_id）+ 策略桥接（pre_tool_call 钩子）。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>_EXTERNAL_ASSISTANT_MESSAGE_TYPE</strong> — sessions.py 内置机制，可将外部智能体结果回写至工作空间会话记录。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-ready"></span><span class="status-bar-text"><strong>AudioBlock.tsx + parseAudioFromToolOutput()</strong> — 组件已存在，可从 JSON 工具输出中解析 audio_url。尚未接入 ToolCard。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-gap"></span><span class="status-bar-text"><strong>AudioBlock → ToolCard 接线</strong> — 任务 4：在 ToolCard.tsx 中约 10 行代码，在渲染原始文本前调用 parseAudioFromToolOutput。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-gap"></span><span class="status-bar-text"><strong>Voicebox MCP 服务器配置</strong> — 任务 1：约 10 行 YAML，用于 stdio 传输的 MCP 服务器注册。</span></div>
+  <div class="status-bar"><span class="status-dot status-dot-gap"></span><span class="status-bar-text"><strong>voicebox-agent 示例规范</strong> — 任务 2：约 30 行 YAML，包含 Voicebox MCP + Handy STT 工具的示例智能体。</span></div>
+</section>
+
+<!-- ─── Remaining Gaps ───────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>与 Cherry 的差距</h2>
+    <p>基于设计决策主动降优先级的项目。此处列出以供参考。</p>
+  </div>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">微</div><h3>微信集成</h3><p>Hermes 已支持 5 个消息平台（Telegram、Discord、Slack、WhatsApp、Signal）。微信需要新建网关适配器 —— 面向中国市场。</p><span class="card-status card-status-gap">未实现</span></div>
+    <div class="card"><div class="card-icon">应</div><h3>应用商店界面</h3><p>Cherry 有专用应用商店 UI。我们的技术栈使用 shell/computer_use（winget/choco）—— 功能可用但作为消费级界面不够精致。</p><span class="card-status card-status-gap">未实现</span></div>
+    <div class="card"><div class="card-icon">诊</div><h3>电脑诊断</h3><p>Cherry 的"电脑医生"监控系统错误、网络、驱动、设备健康。我们已降优先级 —— Hermes 可通过技能（cron + WMI/EventLog）添加。</p><span class="card-status card-status-gap">已降优先级</span></div>
+  </div>
+</section>
+
+<!-- ─── Pricing Comparison ──────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>定价模式对比</h2>
+    <p>我们的技术栈免费且本地运行。Cherry 按月收取积分费用，积分 30 天后过期。</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>等级</th><th>Cherry 价格</th><th>Cherry 积分</th><th>我们的技术栈</th></tr></thead>
+      <tbody>
+        <tr><td>免费版</td><td>¥0</td><td>30,000</td><td>全部功能 — 无限制</td></tr>
+        <tr><td>基础版</td><td>¥69/月</td><td>600,000（30 天过期）</td><td>—</td></tr>
+        <tr><td>高级版</td><td>¥99/月</td><td>900,000（30 天过期）</td><td>—</td></tr>
+        <tr><td>旗舰版</td><td>¥129/月</td><td>1,200,000（30 天过期）</td><td>—</td></tr>
+        <tr><td>年度成本</td><td>¥0–1,548</td><td>积分按月过期</td><td>¥0 — 永久免费</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Next Steps ──────────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <h2>后续步骤</h2>
+    <p>完成语音集成尚余三个小任务。</p>
+  </div>
+  <div class="mermaid-container">
+    <pre class="mermaid">
+flowchart LR
+    T1["任务 4<br/>AudioBlock 接入<br/>ToolCard<br/>约 10 行 TSX"]
+    T2["任务 1<br/>Voicebox MCP<br/>服务器 YAML<br/>约 10 行"]
+    T3["任务 2<br/>voicebox-agent<br/>示例规范<br/>约 30 行"]
+    E2E["端到端测试<br/>完整语音闭环<br/>手动验证"]
+    T1 --> E2E
+    T2 --> E2E
+    T3 --> E2E
+    E2E --> DONE["完成 —<br/>完整语音交互闭环<br/>可运行"]
+    style T1 fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style T2 fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style T3 fill:#ede9e3,stroke:#c4541a,stroke-width:2px,color:#2a2520
+    style DONE fill:#ede9e3,stroke:#2e7d32,stroke-width:2px,color:#2a2520
+    </pre>
+  </div>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">4</div><h3>AudioBlock 接入 ToolCard</h3><p>在 ToolCard.tsx 中导入 parseAudioFromToolOutput，在渲染原始 JSON 前检查 audio_url。约 10 行代码。</p><span class="card-status card-status-gap">约 10 行 TSX</span></div>
+    <div class="card"><div class="card-icon">1</div><h3>Voicebox MCP 服务器配置</h3><p>创建 agent_meow/tools/mcp/voicebox.yaml，使用 stdio 传输。约 10 行 YAML。</p><span class="card-status card-status-gap">约 10 行 YAML</span></div>
+    <div class="card"><div class="card-icon">2</div><h3>voicebox-agent 示例规范</h3><p>创建 examples/voicebox-agent/config.yaml，包含 Voicebox MCP + Handy STT。约 30 行 YAML。</p><span class="card-status card-status-gap">约 30 行 YAML</span></div>
+  </div>
+</section>
+
+<footer>
+  <p>语音集成对比分析报告 · 2026-07-22 · Handy × agent-meow × Hermes × Voicebox</p>
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#ede9e3',
+      primaryTextColor: '#2a2520',
+      primaryBorderColor: '#c4541a',
+      lineColor: '#7a7570',
+      secondaryColor: '#f5f3f0',
+      tertiaryColor: '#f8f6f3',
+      background: '#f5f3f0',
+      mainBkg: '#ede9e3',
+      secondBkg: '#f5f3f0',
+      tertiaryBkg: '#f8f6f3',
+      fontFamily: 'Noto Sans SC, Inter, system-ui, sans-serif',
+      fontSize: '13px',
+      actorBkg: '#ede9e3',
+      actorTextColor: '#2a2520',
+      actorBorderColor: '#c4541a',
+      signalColor: '#5a5550',
+      signalTextColor: '#2a2520',
+      labelBoxBkgColor: '#ede9e3',
+      labelBoxBorderColor: '#c4541a',
+      labelTextColor: '#2a2520',
+      loopTextColor: '#2a2520',
+      noteBkgColor: '#fff3e0',
+      noteTextColor: '#2a2520',
+      noteBorderColor: '#c4541a',
+      activationBkgColor: '#ede9e3',
+      activationBorderColor: '#7a7570',
+      sequenceNumberColor: '#2a2520',
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 50, boxMargin: 10 },
+  });
+</script>
+
+</body>
+</html>
